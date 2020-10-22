@@ -1,40 +1,22 @@
 #!/bin/bash - 
-#===============================================================================
-#
-#          FILE:  n.sh
-# 
-#         USAGE:  ./n.sh 
-# 
-#   DESCRIPTION:  prochain truc à faire
-# 
-#       OPTIONS:  n + entree : affiche prochain truc à faire. / n + ligne: entre prochain truc à faire.
-#  REQUIREMENTS:  fichier .next si pas le crée
-#          BUGS:  ---
-#         NOTES:  ---
-#        AUTHOR: Dr. Fritz Mehner (fgm), mehner@fh-swf.de
-#       COMPANY: FH Südwestfalen, Iserlohn
-#       CREATED: 01/01/2002 06:42:17 CET
-#      REVISION:  ---
-#===============================================================================
 
-set -o nounset                              # Treat unset variables as an error
+c(){
+echo "pas de prochaine action" > .next
+}
 
-if [ -e ".next" ]; then 
-	echo "ok .next existe"
-else
-	echo "fichier .next existe pas ici. je le crée"
- 	touch .next
-	echo "pas de prochaine action" > .next
-fi
 
-if [ "$#" -eq "0" ];
-then
-       cat .next
-fi
+r(){
+cat .next
+}
 
-if [ "$#" -ne "0" ];
-then 
+
+u(){
 cat > .next << EOE
 next : $@
 EOE
-fi
+}
+
+[ -e ".next" ] || c
+[ $# -eq 0 ] && r
+[ $# -eq 0 ] || u "$1"
+
